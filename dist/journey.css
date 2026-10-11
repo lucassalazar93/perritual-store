@@ -1,0 +1,127 @@
+/* Perritual journey layer: loader, scroll scenes and pointer depth.
+   Loaded after experience.css. Motion states live behind html.mj (script ready)
+   and yield to html[data-motion=paused], so content stays visible without them. */
+:root{--logo-bg:#fef7ec;--gold:#edc68b;--inout:cubic-bezier(.77,0,.175,1)}
+
+/* Loader: the logo blooms from the paw inside the P, then lands on the header. */
+.loader{display:none}
+html.pre{overflow:hidden}
+html.pre .loader{position:fixed;inset:0;z-index:200;display:grid;place-content:center;justify-items:center;gap:26px;color:var(--ink)}
+.loader-veil{position:absolute;inset:0;background:var(--logo-bg);transition:transform 950ms var(--inout)}
+.loader-veil:after{content:'';position:absolute;left:-15%;right:-15%;top:calc(100% - 2px);height:16vh;background:inherit;border-radius:0 0 50% 50%/0 0 100% 100%}
+.veil-2{background:var(--orange);transition-delay:130ms}
+.loader.out .loader-veil{transform:translateY(-125%)}
+.loader-core{position:relative;width:min(64vw,44svh,400px);aspect-ratio:1}
+.loader-halo{position:absolute;inset:-20%;z-index:1;border-radius:50%;background:radial-gradient(closest-side,#f7ddb9,#f7ddb900);mix-blend-mode:multiply;animation:halo 2.2s ease-in-out infinite alternate}
+.loader-logo{position:relative;display:block;width:100%;height:100%;transform-origin:50% 88%;animation:bloom 1200ms var(--out) 120ms both,wag 2.4s ease-in-out 1400ms infinite}
+.loader-logo.seal{border-radius:22%;box-shadow:0 22px 50px #482c2026,0 0 0 5px #fffaf1;transition:border-radius 300ms var(--out),box-shadow 300ms ease}
+.loader-paws{position:relative;display:flex;gap:14px}
+.loader-paws svg{width:22px;height:22px;fill:var(--orange);opacity:.14;scale:.8;transition:opacity 200ms ease,scale 320ms var(--out)}
+.loader-paws svg:nth-child(odd),.paw-trail svg:nth-child(odd){translate:0 -6px;rotate:78deg}
+.loader-paws svg:nth-child(even),.paw-trail svg:nth-child(even){translate:0 6px;rotate:102deg}
+.loader-paws svg.on{opacity:1;scale:1}
+.loader-count{position:relative;font:700 13px/1 var(--sans);letter-spacing:2px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.loader-count:after{content:' %'}
+.loader-halo,.loader-paws,.loader-count{transition:opacity 250ms ease}
+.loader.out :is(.loader-halo,.loader-paws,.loader-count){opacity:0}
+.spark{position:fixed;width:22px;height:22px;margin:-11px;pointer-events:none}
+@keyframes bloom{from{clip-path:circle(0% at 21% 54%);transform:scale(1.14) rotate(-5deg)}to{clip-path:circle(150% at 21% 54%);transform:none}}
+@keyframes wag{0%,100%{transform:rotate(0)}25%{transform:rotate(1.1deg)}75%{transform:rotate(-1.1deg)}}
+@keyframes halo{from{transform:scale(.88);opacity:.6}to{transform:scale(1.08);opacity:1}}
+
+/* Ambient depth behind the transparent sections. */
+.aura{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.aura i{position:absolute;width:70vmax;height:70vmax;border-radius:50%}
+.aura i:nth-child(1){left:-25vmax;top:-10vmax;background:radial-gradient(closest-side,#f0bc7a3d,#f0bc7a00)}
+.aura i:nth-child(2){right:-30vmax;top:30vh;background:radial-gradient(closest-side,#c2add838,#c2add800)}
+.aura i:nth-child(3){left:20vw;bottom:-45vmax;background:radial-gradient(closest-side,#acb89a40,#acb89a00)}
+
+/* Hero: floating notes around the photo. */
+.hero-decor{position:absolute;inset:0;z-index:3;pointer-events:none;translate:calc(var(--mx,0)*18px) calc(var(--my,0)*12px);transition:translate 600ms var(--out)}
+.pill{position:absolute;display:inline-flex;align-items:center;gap:8px;padding:9px 15px 9px 10px;border-radius:999px;background:#fffaf1;color:var(--ink);box-shadow:0 10px 26px #482c201f,0 0 0 1px #fff;font-size:12px;font-weight:700;white-space:nowrap}
+.pill svg{width:24px;height:24px;padding:5px;border-radius:50%;background:var(--peach);fill:var(--orange)}
+.pill-a{top:17%;left:-7%;rotate:-5deg}
+.pill-b{bottom:25%;left:-12%;rotate:4deg}.pill-b svg{background:#dfe5d3;fill:var(--green)}
+.pill-c{bottom:9%;right:-2%;rotate:-3deg}.pill-c svg{background:#e6dcf1;fill:#7b5a9c}
+.deco{position:absolute;width:54px;height:54px;fill:var(--orange);opacity:.2}
+.paw-1{top:-2%;left:10%;rotate:-24deg}.paw-2{bottom:-4%;left:34%;rotate:18deg;width:38px;height:38px;opacity:.14}
+html.mj:not(.go):not([data-motion=paused]) :is(.hero .headline-line,.hero-copy>p,.hero-copy>.btn,.hero-signature,.hero-frame,.hero-doodle,.pill,.deco){opacity:0}
+html.mj.go:not([data-motion=paused]) .hero .headline-line{transform-origin:0 100%;animation:rise 1000ms var(--out) backwards}
+html.mj.go:not([data-motion=paused]) .hero .accent-line{animation-delay:90ms}
+html.mj.go:not([data-motion=paused]) :is(.hero-copy>p,.hero-copy>.btn,.hero-signature,.hero-doodle,.deco){animation:fade-up 800ms var(--out) 260ms backwards}
+html.mj.go:not([data-motion=paused]) .hero-copy>.btn{animation-delay:360ms}
+html.mj.go:not([data-motion=paused]) :is(.hero-signature,.hero-doodle,.deco){animation-delay:620ms}
+html.mj.go:not([data-motion=paused]) .hero-frame{animation:unveil 1300ms var(--out) 80ms backwards}
+html.mj.go:not([data-motion=paused]) .pill{animation:pop 700ms var(--out) 700ms backwards,bob 3.4s ease-in-out 1.5s infinite alternate}
+html.mj.go:not([data-motion=paused]) .pill-b{animation-delay:820ms,1.9s;animation-duration:700ms,4.1s}
+html.mj.go:not([data-motion=paused]) .pill-c{animation-delay:940ms,2.3s;animation-duration:700ms,3.7s}
+@keyframes rise{from{opacity:0;transform:translateY(.55em) rotate(3deg)}}
+@keyframes fade-up{from{opacity:0;transform:translateY(18px)}}
+@keyframes unveil{from{opacity:0;clip-path:inset(100% -100px -100px -100px);transform:rotate(7deg) translateY(50px) scale(.94)}to{clip-path:inset(-100px)}}
+@keyframes pop{from{opacity:0;scale:.8}}
+@keyframes bob{to{translate:0 -9px}}
+
+/* Crossed ribbons: two endless bands that speed up with the scroll. */
+.ribbons{position:relative;height:190px;margin-top:10px;overflow-x:clip}
+.band{position:absolute;top:50%;left:-6vw;width:112vw;padding:20px 0;overflow:hidden;font-family:var(--serif);font-size:19px;font-weight:700;white-space:nowrap;box-shadow:0 14px 30px #482c2014}
+.band-a{z-index:1;background:var(--orange);color:#fff6e9;transform:translateY(-50%) rotate(-3.2deg)}
+.band-b{background:var(--ink);color:var(--peach);transform:translateY(-50%) rotate(2.6deg)}
+.band-track{display:flex;width:max-content}
+.band-group{display:flex;align-items:center;gap:36px;padding-right:36px}
+.band-group b{font-size:24px;font-weight:400;opacity:.75}
+.band-track.run{animation:band linear infinite}
+.band-b .band-track.run{animation-direction:reverse}
+@keyframes band{to{transform:translateX(calc(-1*var(--w)))}}
+
+/* Manifesto: a pinned panel whose words light up as the page moves. */
+.manifesto-panel{position:relative;display:grid;place-items:center;min-height:86svh;margin:0 14px;padding:130px 7% 100px;overflow:hidden;border-radius:40px;background:var(--ink);color:#f7ead7}
+.manifesto-text{position:relative;z-index:2;max-width:min(15em,62vw);font-family:var(--serif);font-size:clamp(30px,5vw,68px);font-weight:700;line-height:1.1;letter-spacing:-.035em;text-align:center;text-wrap:balance}
+.manifesto-text em{color:var(--gold)}
+.manifesto-hint{position:absolute;left:0;right:0;bottom:56px;z-index:2;text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#f7ead799;display:none}
+.tile{position:absolute;z-index:1;width:clamp(86px,13vw,190px);height:auto;aspect-ratio:1;object-fit:cover;border-radius:22%;box-shadow:0 24px 50px #0005,0 0 0 4px #fff2}
+.t1{top:17%;left:5%;rotate:-9deg}.t2{top:14%;right:7%;rotate:7deg}.t3{top:45%;left:-2%;rotate:6deg}
+.t4{top:49%;right:-1.5%;rotate:-6deg}.t5{bottom:7%;left:13%;rotate:5deg}.t6{bottom:9%;right:14%;rotate:-8deg}
+html.mj:not([data-motion=paused]) .manifesto{height:230vh}
+html.mj:not([data-motion=paused]) .manifesto-pin{position:sticky;top:0;height:100svh;overflow:hidden}
+html.mj:not([data-motion=paused]) .manifesto-panel{position:absolute;inset:0;margin:0;min-height:0}
+html.mj:not([data-motion=paused]) .manifesto-hint{display:block}
+html.mj:not([data-motion=paused]) .manifesto-text .w{opacity:.2;transition:opacity 400ms ease}
+html.mj:not([data-motion=paused]) .manifesto-text .w.lit{opacity:1}
+
+/* Headings rise word by word; supporting copy follows. */
+h2.split .w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .04em .14em;margin:0 -.04em -.14em}
+h2.split .w>span{display:inline-block}
+html.mj:not([data-motion=paused]) h2.split .w>span{transform:translateY(112%);transition:transform 900ms var(--out);transition-delay:calc(var(--i)*40ms)}
+html.mj:not([data-motion=paused]) h2.split.in .w>span{transform:none}
+html.mj:not([data-motion=paused]) .rv{opacity:0;transform:translateY(24px);transition:opacity 700ms ease,transform 900ms var(--out);transition-delay:calc(var(--i,0)*70ms)}
+html.mj:not([data-motion=paused]) .rv.in{opacity:1;transform:none}
+
+/* Steps: paw prints walk from the first step to the last. */
+.paw-trail{display:flex;justify-content:space-between;margin:34px 0 -6px;padding:10px 0}
+.paw-trail svg{flex:none;width:26px;height:26px;fill:var(--orange);opacity:.3}
+html.mj:not([data-motion=paused]) .paw-trail svg{opacity:.1;scale:.7;transition:opacity 300ms ease,scale 450ms var(--out)}
+html.mj:not([data-motion=paused]) .paw-trail svg.on{opacity:.9;scale:1}
+
+/* Story: the catalog orbits the seal. */
+.story{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:6%;align-items:center;padding:110px 7%;overflow:hidden}
+.orbit{--s:min(460px,78vw);position:relative;display:grid;place-items:center;width:var(--s);height:var(--s);margin:auto}
+.orbit-ring{position:absolute;inset:6%;border:1px dashed #482c2040;border-radius:50%}
+.ring-2{inset:24%;border-style:solid;border-color:#482c2018}
+.story .orbit .orbit-logo{position:relative;z-index:1;width:40%;height:40%;object-fit:cover;border-radius:26%;background:var(--logo-bg);mix-blend-mode:normal;box-shadow:0 18px 44px #482c2026,0 0 0 6px #fffaf1;animation:none}
+.orbit-item{position:absolute;top:50%;left:50%;width:19%;aspect-ratio:1;margin:-9.5% 0 0 -9.5%;transform:rotate(calc(var(--a) + var(--spin,0deg))) translateX(calc(var(--s)*.44)) rotate(calc(-1*(var(--a) + var(--spin,0deg))))}
+.story .orbit .orbit-item img{display:block;width:100%;height:100%;margin:0;object-fit:cover;border-radius:50%;mix-blend-mode:normal;box-shadow:0 10px 24px #482c2030,0 0 0 4px #fffaf1;animation:none}
+.story-copy .btn{margin-top:28px}
+
+/* Footer: the name arrives letter by letter. */
+footer{display:block;margin:0 14px 14px;padding:56px 5% 64px;overflow:hidden;border:0;border-radius:32px;background:var(--ink);color:#f7ead7}
+.foot-row{display:flex;justify-content:space-between;align-items:end;gap:24px}
+footer strong{font-family:var(--serif);font-size:clamp(24px,2.6vw,34px);line-height:1.1;letter-spacing:-.03em}
+footer span{color:#d9c2ae}
+.wordmark{margin-top:44px;padding-top:.06em;overflow:hidden;font-family:var(--serif);font-size:min(22.4vw,400px);font-weight:700;line-height:.92;letter-spacing:-.05em;text-align:center;white-space:nowrap;color:var(--peach)}
+.wordmark span{display:inline-block;margin:0;font:inherit;letter-spacing:inherit;color:inherit}
+
+@media(hover:hover) and (pointer:fine){.product-art{transition:box-shadow 400ms var(--out),transform 450ms var(--out)}.hero .btn,.story .btn{transition:background 180ms ease,transform 160ms var(--out),box-shadow 240ms ease,translate 300ms var(--out)}}
+@media(max-width:760px){.headline-line{display:inline-block}.headline-line:first-child{margin-right:.2em}.pill{font-size:11px;padding:7px 12px 7px 8px}.pill-a{top:7%;left:-1%}.pill-c{bottom:6%;right:-1%}.pill-b,.deco{display:none}.ribbons{height:150px}.band{padding:15px 0;font-size:16px}.band-group{gap:24px;padding-right:24px}.manifesto-panel{margin:0 8px;padding:150px 7% 150px;border-radius:28px}.manifesto-text{max-width:88vw;font-size:clamp(28px,8.4vw,44px)}.tile{width:clamp(72px,22vw,120px)}.t1{top:11%;left:6%}.t2{top:13%;right:8%}.t3,.t4{display:none}.t5{bottom:11%;left:9%}.t6{bottom:13%;right:10%}.paw-trail{margin:22px 0 0}.paw-trail svg{width:22px;height:22px}.story{display:block;padding:64px 7% 70px;text-align:left}.orbit{margin:0 auto 46px}.story-copy .btn{margin-top:22px}footer{margin:0 8px 8px;padding:44px 7% 60px;border-radius:24px}.foot-row{display:block}.wordmark{margin-top:34px;font-size:21vw}}
+html[data-motion=paused] :is([data-px],.tile,.manifesto-panel,.wordmark span,.product-art){transform:none!important}
+html[data-motion=paused] .manifesto-panel{border-radius:40px!important}
+html[data-motion=paused] :is(.hero-decor,.hero .btn,.story .btn){translate:none!important}

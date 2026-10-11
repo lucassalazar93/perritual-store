@@ -1,0 +1,35 @@
+Skill de https://github.com/pbakaus/impeccable (Apache 2.0, commit 778c8a7, 2026-10-07, skill v4.5.0, engine 0.1.11).
+Origen dentro del repo: .claude/skills/impeccable.
+Instalada SOLO la parte de texto: SKILL.md y reference/. NO se copió scripts/ a propósito:
+el launcher (scripts/impeccable, impeccable.cmd) descarga y ejecuta un binario desde GitHub Releases y el skill
+pide correrlo al inicio de cada sesión; scripts/ también trae JS que se inyecta en el navegador (modo live).
+Sin scripts, el skill usa su modo de respaldo ("Launcher unavailable": lee PRODUCT.md y DESIGN.md directamente).
+No funcionan sin el motor: live, generate, hooks, pin/unpin, doctor.
+Para activar el motor completo hace falta una decisión explícita del dueño del proyecto.
+Licencia y aviso: LICENSE-impeccable.txt, NOTICE-impeccable.md.
+
+Skills de https://github.com/emilkowalski/skills (MIT, commit e8a175d, 2026-10-02).
+Copiadas sin cambios desde lucas-portfolio/.claude/skills: animate, animation-vocabulary, apple-design, break-ui,
+emil-design-eng, find-animation-opportunities, improve-animations, mobile-native, prototype, review-animations.
+No incluidas: animate-expo y write-swift (React Native / Swift, no aplican a este sitio React + Vite),
+ask-sonner (el proyecto no usa Sonner), pick-ui-library.
+Actualizar: volver a clonar el repo y copiar las carpetas.
+Licencia: LICENSE-emilkowalski-skills.txt.
+
+Skills de https://github.com/Leonxlnx/taste-skill (MIT, commit e3c9203, 2026-10-06).
+Copiadas sin cambios desde lucas-portfolio/.claude/skills (carpeta renombrada al `name` del skill):
+design-taste-frontend (skills/taste-skill), redesign-existing-projects (skills/redesign-skill),
+high-end-visual-design (skills/soft-skill), full-output-enforcement (skills/output-skill).
+No incluidas: taste-skill-v1, gpt-taste, image-to-code, imagegen-frontend-web/mobile, brandkit, stitch-skill,
+brutalist-skill, minimalist-skill.
+No se ejecutó ningún script del repo (skill.sh, scripts/*.mjs).
+Licencia: LICENSE-taste-skill.txt.
+
+Plugin Figma (no vive en esta carpeta): figma@claude-plugins-official, fuente https://github.com/figma/mcp-server-guide
+(v2.2.81, sha 07316dd). Instalado con `claude plugin install figma@claude-plugins-official --scope project`;
+queda habilitado en .claude/settings.json. Trae el servidor MCP remoto https://mcp.figma.com/mcp y sus skills figma-*.
+Requiere que el dueño autorice su cuenta de Figma (OAuth) la primera vez.
+
+Plugin Playwright (no vive en esta carpeta): playwright@claude-plugins-official, fuente https://github.com/microsoft/playwright-mcp
+Instalado con `claude plugin install playwright@claude-plugins-official --scope project`; habilitado en .claude/settings.json.
+Arranca el servidor MCP con `npx @playwright/mcp@latest` (paquete npm de Microsoft, 0.0.83 al 2026-10-07; sin versión fija).
